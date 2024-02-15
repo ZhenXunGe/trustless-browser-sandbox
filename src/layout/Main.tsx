@@ -64,8 +64,6 @@ export function Main() {
   */
 
   function loadGame(l2account: number) {
-          /*
-      init().then((gameplay) => {
       gameplay.load(
           BigInt(l2account),
           BigInt(merkleRoot[0]),
@@ -75,11 +73,9 @@ export function Main() {
       );
       //setTargets([Number(target0), Number(target1), Number(target2)]);
       setLoaded(true);
-      }
-           */
   }
 
-  function initGame(gameplay: any, l2account: number) {
+  function initGame(l2account: number) {
       console.log("setting instance");
       console.log(gameplay);
       gameplay.init(BigInt(l2account));
@@ -105,8 +101,7 @@ export function Main() {
     if (l2account) {
         if (loaded == false) {
           init(zkwasm_contract).then(() => {
-            gameplay.init(BigInt("0x" + l2account!.address))
-            console.log("init done");
+            initGame(Number(BigInt("0x" + l2account!.address)));
           });
           /**
           zkwasm_contract().then((wasm) =>{
