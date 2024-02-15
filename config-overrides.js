@@ -24,14 +24,17 @@ module.exports = function override(config, env) {
       })
   ])
 
+  /*
   config.plugins = (config.plugins || []).concat([
       new WasmPackPlugin({
           crateDirectory: path.resolve(__dirname, './src/tdengine/'),
       }),
   ])
-
-
-
+  
+  config.experiments = {
+    asyncWebAssembly: true
+  }
+  */
   config.module.rules.forEach(rule => {
     (rule.oneOf || []).forEach(oneOf => {
       if (oneOf.test && oneOf.test.toString().indexOf('tsx') >= 0) {
@@ -45,10 +48,6 @@ module.exports = function override(config, env) {
 
   const wasmExtensionRegExp = /\.wasm$/;
   config.resolve.extensions.push('.wasm');
-
-  config.experiments = {
-    asyncWebAssembly: true
-  }
 
   config.module.rules.forEach(rule => {
     (rule.oneOf || []).forEach(oneOf => {

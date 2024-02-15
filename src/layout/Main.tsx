@@ -4,7 +4,6 @@ import { useAppSelector, useAppDispatch } from "../app/hooks";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Button, Form } from "react-bootstrap";
-import * as gameplay from "../tdengine/pkg";
 import HistoryTasks from "../components/History";
 import { NewProveTask } from "../modals/addNewProveTask";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -16,6 +15,8 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { ModalOptions } from "../types/layout";
 import { numToUint8Array, SignatureWitness } from "../utils/proof";
 import { drawObjects, drawTiles } from "../render/tile";
+import zkwasm_contract from "../tdengine/pkg/zkwasm_contract_bg.wasm";
+import init, * as gameplay from "../tdengine/pkg";
 
 import {
   //selectL1Account,
@@ -78,10 +79,11 @@ export function Main() {
            */
   }
 
-  function initGame(l2account: number) {
+  function initGame(gameplay: any, l2account: number) {
       console.log("setting instance");
       console.log(gameplay);
       gameplay.init(BigInt(l2account));
+      console.log("initGame done");
       let objs = gameplay.get_objects();
       let num = gameplay.get_string();
       drawTiles();
@@ -102,7 +104,35 @@ export function Main() {
   useEffect(() => {
     if (l2account) {
         if (loaded == false) {
-            initGame(Number(BigInt("0x" + l2account.address)));
+          init(zkwasm_contract).then(() => {
+            gameplay.init(BigInt("0x" + l2account!.address))
+            console.log("init done");
+          });
+          /**
+          zkwasm_contract().then((wasm) =>{
+            wasm.init(Number(BigInt("0x" + l2account!.address)));
+          }) */
+          /*
+          fetch("/zkwasm_contract_bg.wasm").then( (response ) =>
+            response.arrayBuffer().then((buffer) =>
+              WebAssembly.instantiate(buffer).then(
+                (results) => {
+                  //(gameplay as any).__wbg_set_wasm(results);
+                  (results as any).init(Number(BigInt("0x" + l2account!.address)));
+                },
+              )))
+               
+             /*
+          import ("../tdengine/pkg").then((gameplay)=>{
+              //let results = new WebAssembly.Instance(gameplay_wasm);
+            //(gameplay as any).__wbg_set_wasm(module);
+            initGame(gameplay, Number(BigInt("0x" + l2account!.address)));
+          })
+                /*
+              WebAssembly.instantiate(gameplay_wasm).then((results) => {
+                (gameplay as any).__wbg_set_wasm(results);
+                initGame(Number(BigInt("0x" + l2account!.address)));
+              }) */
         } else {
             let msg = msgToSign();
             console.log(l2account);
