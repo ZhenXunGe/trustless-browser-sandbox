@@ -275,7 +275,7 @@ export const GameCardText = styled.p`
 
 export const GameCardDetailLink = styled.a`
     font-size: 10pt;
-    color: #CCC;
+    color: #787878;
     text-decoration: none;
     &:hover {
         text-decoration: underline;
