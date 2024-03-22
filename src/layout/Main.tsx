@@ -9,8 +9,11 @@ import Landing from "./Landing";
 //import { GameController } from "../games/streetpets/controller";
 //import { ImageMD5 } from "../games/streetpets/js/config";
 
-import { GameController } from "../games/sumgame/controller";
-//import { GameController } from "../games/planet/controller";
+// import { GameController as TemplateController } from "../games/sumgame/controller";
+import { GameController as RogueLikeController } from "../games/roguelike/controller";
+import { GameController as TowerDefenceController } from "../games/towerdefence/controller";
+import { GameController as DemoGameController } from "../games/demogame/controller";
+
 import logo from "../images/logo.png";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -23,13 +26,20 @@ export function Main() {
         <Routes>
           <Route path="/">
             <Route index element={<Landing/>}/>
-            <Route path="roguelike" element={<GameController/>}/>
+            <Route path="roguelike" element={<RogueLikeController/>}/>
           </Route>
+          {/* <Route path="/">
+            <Route index element={<Landing/>}/>
+            <Route path="template" element={<TemplateController/>}/>
+          </Route> */}
+          {/* <Route path="/">
+            <Route index element={<Landing/>}/>
+            <Route path="towerdefence" element={<TowerDefenceController/>}/>
+          </Route> */}
           <Route path="/">
             <Route index element={<Landing/>}/>
-            <Route path="sumgame" element={<GameController/>}/>
+            <Route path="demogame" element={<DemoGameController/>}/>
           </Route>
-
         </Routes>
       </BrowserRouter>
       <img className="wasm-logo" src={logo}></img>
